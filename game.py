@@ -1,29 +1,29 @@
 import pygame
 import sys
 
+from scripts.level import Tilemap, Background
+
 class Game:
 
     def __init__(self):
         pygame.init()
         pygame.display.set_caption('Bubble Game')
-        self.screen = pygame.display.set_mode((800, 600))
+        self.screen = pygame.display.set_mode((1600, 1200))
         self.clock = pygame.time.Clock()
         self.running = True
+        self.tile_size = 64
+
+        self.background = Background(self, (1600, 1200), self.tile_size, (232, 229, 244), True)
+        print(self.background.checkered)
+        self.tilemap = Tilemap(self, self.tile_size, (1600, 1200))
 
     def run(self):
-        i = 0
+
         while self.running:
 
             self.screen.fill((255, 255, 255))
-
-            self.screen.blit(pygame.image.load('resources/img/bubble/bubble_lower.png'), (275, 270))
-
-            frame = (i // 8) % 4 + 1 
-            ham = pygame.image.load(f'resources/img/ham/{frame}.png')
-            self.screen.blit(ham, (300, 300))
-            i += 1
-
-            self.screen.blit(pygame.image.load('resources/img/bubble/bubble_upper.png'), (275, 270))
+            self.background.render(self.screen)
+            self.tilemap.render(self.screen)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
